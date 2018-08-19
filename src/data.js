@@ -1395,4 +1395,20 @@ const airports = [
 
 ];
 
-export default {routes, airlines, airports};
+function getAirlineById(id) {
+  return airlines.find(airline => airline.id === id);
+}
+
+function getAirportByCode(code) {
+  return airports.find(airport => airport.code === code);
+}
+
+export default {routes, airlines, airports, getAirlineById, getAirportByCode};
+
+// console.log(getAirlineById(24));
+// { id: 24, name: 'American Airlines' }
+// console.log(getAirportByCode('YEG'));
+// { code: 'YEG',
+// name: 'Edmonton International Airport',
+// lat: 53.309700012200004,
+// long: -113.580001831 }
