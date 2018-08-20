@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const Table = (props) => (
   <table className='ui celled striped compact table'>
