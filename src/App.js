@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import Table from './components/Table.js'
+import Table from './components/Table'
 
 class App extends Component {
   render() {
@@ -11,18 +11,17 @@ class App extends Component {
     ];
 
     return (
-      <div className="app">
-        <header className="header">
-          <h1 className="title">Airline Routes</h1>
+      <div>
+        <header className='ui inverted square menu'>
+          <h3 className='header item'>Airline Routes</h3>
         </header>
-        <section>
-          <Table 
-            className="routes-table"
+        <main className='ui container'>
+          <Table
             columns={columns}
-            rows=""
-            format=""
+            perPage={25}
           />
-        </section>
+        </main>
+        <div className='ui divider' />
       </div>
     );
   }
