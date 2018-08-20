@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
 import './App.css';
-import Table from './components/Table'
+import Dashboard from './components/Dashboard'
+import Data from './data'
 
 class App extends Component {
+  state = {
+    airline = null;
+  }
+
+  formatValue(property, value) {
+    if (property === 'airline') {
+      return Data.getAirlineById(value).name;
+    } else {
+      return Data.getAirportByCode(value).name;
+    }
+  }
+
   render() {
     const columns = [
       {name: 'Airline', property: 'airline'},
@@ -16,8 +29,14 @@ class App extends Component {
           <h3 className='header item'>Airline Routes</h3>
         </header>
         <main className='ui container'>
-          <Table
+          <Select 
+
+          />
+
+          <Dashboard
             columns={columns}
+            rows={''}
+            format={this.formatValue}
             perPage={25}
           />
         </main>
