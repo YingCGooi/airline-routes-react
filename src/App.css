@@ -35,10 +35,6 @@ table.routes-table {
   background-color: #eee;
 }
 
-.map {
-  width: 90%;
-}
-
 .pagination a {
   margin: 0 .5em;
 }
@@ -78,4 +74,12 @@ svg circle.source {
 
 option:disabled {
   color: #BBB;
+}
+
+svg {
+  margin-bottom: 1rem;
+}
+
+header.menu {
+  margin-bottom: 0 !important;
 }
