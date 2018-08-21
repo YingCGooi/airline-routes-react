@@ -15,9 +15,9 @@ class App extends Component {
     this.state = this.defaultState;
   }
 
-  hasMatchAirline(airlineId, route) {
+  hasMatchAirline(airlineId, id) {
     if (airlineId === 'all') return true;
-    return route.airline === +airlineId;
+    return id === +airlineId;
   }
 
   hasMatchAirport(airportCode, route) {
@@ -27,9 +27,16 @@ class App extends Component {
 
   filterRoutes = () => {
     return Data.routes.filter(route => (
-      this.hasMatchAirline(this.state.airlineId, route) &&
+      this.hasMatchAirline(this.state.airlineId, route.airline) &&
       this.hasMatchAirport(this.state.airportCode, route)
     ));
+  }
+
+  filterAirlines = () => {
+    return Data.airlines.map(airline => {
+      airline.disabled = !this.hasMatchAirline(this.state.airlineId, airline.id);
+      return airline;
+    });
   }
 
   formatValue(property, value) {
@@ -49,6 +56,9 @@ class App extends Component {
   handleShowAllClicked = (e) => {
     e.preventDefault();
     this.setState(_ => this.defaultState);
+    document.querySelectorAll('select').forEach(select => {
+      select.value = 'all';
+    });
   }
 
   render() {
@@ -59,7 +69,7 @@ class App extends Component {
     ];
 
     const filteredRoutes = this.filterRoutes();
-    const filteredAirlines = Data.airlines;
+    const filteredAirlines = this.filterAirlines();
     const filteredAirports = Data.airports;
 
     return (
@@ -71,7 +81,6 @@ class App extends Component {
           <Form 
             airlineOptions={filteredAirlines} 
             airportOptions={filteredAirports}
-            value=""
             onSelect={this.handleSelect}
             onShowAllClicked={this.handleShowAllClicked}
           />
