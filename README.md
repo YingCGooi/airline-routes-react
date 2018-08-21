@@ -9,7 +9,7 @@ If you wish to skip installation and view the demo app, navigate to https://airl
 1. `cd` to the root path of the project folder
 2. Run `npm install` to install dependencies
 3. Run `npm start` 
-4. If `npm` did not open up a new tab in your browser, navigate to `localhost:3000` in your browser to start the application.
+4. If `npm` did not open up a new tab in your browser, navigate to `localhost:3000` in your browser to start the application
 
 ### Features
 - Filter routes by airline
