@@ -15,9 +15,9 @@ class App extends Component {
     this.state = this.defaultState;
   }
 
-  hasMatchAirline(airlineId, id) {
+  hasMatchAirline(airlineId, route) {
     if (airlineId === 'all') return true;
-    return id === +airlineId;
+    return route.airline === +airlineId;
   }
 
   hasMatchAirport(airportCode, route) {
@@ -27,15 +27,29 @@ class App extends Component {
 
   filterRoutes = () => {
     return Data.routes.filter(route => (
-      this.hasMatchAirline(this.state.airlineId, route.airline) &&
+      this.hasMatchAirline(this.state.airlineId, route) &&
       this.hasMatchAirport(this.state.airportCode, route)
     ));
   }
 
-  filterAirlines = () => {
-    return Data.airlines.map(airline => {
-      airline.disabled = !this.hasMatchAirline(this.state.airlineId, airline.id);
-      return airline;
+  filterAirlines = (routes) => {
+    const routeAirlineIds = routes.map(route => route.airline);
+
+    return this.assignDisableProp(Data.airlines, routeAirlineIds, 'id');
+  }
+
+  filterAirports = (routes) => {
+    const routeAirportCodes = routes.reduce((prev, route) => (
+      prev.concat(route.src, route.dest)
+    ), [routes[0].src, routes[0].dest])
+
+    return this.assignDisableProp(Data.airports, routeAirportCodes, 'code');
+  }
+
+  assignDisableProp = (data, routeValues, keyName) => {
+    return data.map(row => {
+      const hasValue = routeValues.includes(row[keyName]);
+      return Object.assign(row, { disabled: !hasValue });
     });
   }
 
@@ -50,7 +64,7 @@ class App extends Component {
   handleSelect = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    this.setState(_ => ({ [name]: value }));
+    this.setState({ [name]: value });
   }
 
   handleShowAllClicked = (e) => {
@@ -69,8 +83,8 @@ class App extends Component {
     ];
 
     const filteredRoutes = this.filterRoutes();
-    const filteredAirlines = this.filterAirlines();
-    const filteredAirports = Data.airports;
+    const filteredAirlines = this.filterAirlines(filteredRoutes);
+    const filteredAirports = this.filterAirports(filteredRoutes);
 
     return (
       <div>
