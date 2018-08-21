@@ -76,6 +76,12 @@ class App extends Component {
     });
   }
 
+  handleCircleClicked = (e) => {
+    const code = e.target.dataset.code;
+    this.setState({ airportCode: code });
+    document.querySelector('[name=airportCode]').value = code;
+  }
+
   render() {
     const columns = [
       {name: 'Airline', property: 'airline'},
@@ -93,8 +99,11 @@ class App extends Component {
           <h3 className='header item'>Airline Routes</h3>
         </header>
         
-        <Map routes={filteredRoutes} />
-        
+        <Map 
+          routes={filteredRoutes}
+          onCircleClicked={this.handleCircleClicked}
+        />
+
         <main className='ui container'>
           <Form 
             airlineOptions={filteredAirlines} 
