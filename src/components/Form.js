@@ -26,7 +26,12 @@ const Form = (props) => (
     </div>
 
     <div className='field'>
-      <button className='ui button'>Show All Routes</button>
+      <button 
+        className='ui button'
+        onClick={props.onShowAllClicked}
+      >
+        Show All Routes
+      </button>
     </div>    
   </form>
 )
