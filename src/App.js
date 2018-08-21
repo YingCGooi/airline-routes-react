@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import TableContainer from './components/TableContainer'
 import Form from './components/Form'
+import Map from './components/Map'
 import Data from './data'
 
 class App extends Component {
@@ -91,6 +92,9 @@ class App extends Component {
         <header className='ui inverted square menu'>
           <h3 className='header item'>Airline Routes</h3>
         </header>
+        
+        <Map routes={filteredRoutes} />
+        
         <main className='ui container'>
           <Form 
             airlineOptions={filteredAirlines} 
