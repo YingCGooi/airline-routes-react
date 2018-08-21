@@ -1,27 +1,35 @@
 import React, { Component } from 'react';
 import './App.css';
-import Dashboard from './components/Dashboard'
+import TableContainer from './components/TableContainer'
 import Form from './components/Form'
 import Data from './data'
 
 class App extends Component {
-  state = {
+  defaultState = {
     airlineId: 'all',
     airportCode: 'all'
   }
 
+  constructor(props) {
+    super(props);
+    this.state = this.defaultState;
+  }
+
+  hasMatchAirline(airlineId, route) {
+    if (airlineId === 'all') return true;
+    return route.airline === +airlineId;
+  }
+
+  hasMatchAirport(airportCode, route) {
+    if (airportCode === 'all') return true;
+    return [route.src, route.dest].includes(airportCode);
+  }
+
   filterRoutes = () => {
-    return Data.routes.filter(route => {
-      const airlineId = this.state.airlineId;
-      const airportCode = this.state.airportCode;
-      let airlineCriteria = true;
-      let airportCriteria = true;
-
-      if (airlineId !== 'all') airlineCriteria = route.airline === +(this.state.airlineId);
-      if (airportCode !== 'all') airportCriteria = [route.src, route.dest].includes(this.state.airportCode);
-
-      return airlineCriteria && airportCriteria;
-    });
+    return Data.routes.filter(route => (
+      this.hasMatchAirline(this.state.airlineId, route) &&
+      this.hasMatchAirport(this.state.airportCode, route)
+    ));
   }
 
   formatValue(property, value) {
@@ -36,6 +44,11 @@ class App extends Component {
     const name = e.target.name;
     const value = e.target.value;
     this.setState(_ => ({ [name]: value }));
+  }
+
+  handleShowAllClicked = (e) => {
+    e.preventDefault();
+    this.setState(_ => this.defaultState);
   }
 
   render() {
@@ -59,12 +72,13 @@ class App extends Component {
             airlineOptions={filteredAirlines} 
             airportOptions={filteredAirports}
             value=""
-            onSelect={this.handleSelect} 
+            onSelect={this.handleSelect}
+            onShowAllClicked={this.handleShowAllClicked}
           />
 
           <div className='ui divider' />
 
-          <Dashboard
+          <TableContainer
             columns={columns}
             rows={filteredRoutes}
             format={this.formatValue}
