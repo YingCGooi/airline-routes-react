@@ -40,24 +40,40 @@ table.routes-table {
 }
 
 svg circle:hover {
-  cursor: crosshair;
+  cursor: pointer;
 }
 
 svg path {
-  stroke: white;
-  stroke-width: 0.2;
+  stroke: #FFF;
+  stroke-width: 0.3;
 }
 
 svg circle.destination {
-  stroke: red;
-  stroke-width: .3;
-  fill: transparent;
-  r: 0.8;
+  stroke: #FFF;
+  stroke-width: 0.4;
+  fill: #CB4335;
+  r: 2;
 }
 
 svg circle.source {
-  fill: lightgreen;
-  r: 0.5;
+  stroke: #222;
+  stroke-width: 0.4;  
+  fill: #00BFA5;
+  r: 2;
+}
+
+svg circle.destination:hover {
+  stroke: #FFF;
+  stroke-width: 1;
+  fill: #CB4335;  
+  r: 3;
+}
+
+svg circle.source:hover {
+  stroke: #222;
+  stroke-width: 1;  
+  fill: #00BFA5;
+  r: 3;
 }
 
 /*=======================
