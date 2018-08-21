@@ -39,6 +39,11 @@ table.routes-table {
   margin: 0 .5em;
 }
 
+div.map {
+  margin: 0 auto;
+  max-width: 1140px;
+}
+
 svg circle:hover {
   cursor: pointer;
 }

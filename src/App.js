@@ -97,12 +97,15 @@ class App extends Component {
       <div>
         <header className='ui inverted square menu'>
           <h3 className='header item'>Airline Routes</h3>
+          <small className='sub header item'>Built with React and Semantic UI</small>
         </header>
         
-        <Map 
-          routes={filteredRoutes}
-          onCircleClicked={this.handleCircleClicked}
-        />
+        <div class='map'>
+          <Map 
+            routes={filteredRoutes}
+            onCircleClicked={this.handleCircleClicked}
+          />
+        </div>
 
         <main className='ui container'>
           <Form 
