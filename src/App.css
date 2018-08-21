@@ -75,3 +75,7 @@ svg circle.source {
 .medium-text {
   font-size: 1.2rem !important;
 }
+
+option:disabled {
+  color: #BBB;
+}

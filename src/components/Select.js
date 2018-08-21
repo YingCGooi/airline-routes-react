@@ -14,7 +14,7 @@ const Select = (props) => (
             value={option[props.valueKey]} 
             key={option[props.valueKey]}
           >
-            {option[props.titleKey]}
+            { option[props.titleKey] }
           </option>
         ))
       }

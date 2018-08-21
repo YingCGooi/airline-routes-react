@@ -24,7 +24,7 @@ class TableContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState(_ => ({ pageNumber: 0 }) );
+    this.setState({ pageNumber: 0 });
   }
 
   render() {
