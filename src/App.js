@@ -100,7 +100,7 @@ class App extends Component {
           <small className='sub header item'>Built with React and Semantic UI</small>
         </header>
         
-        <div class='map'>
+        <div className='map'>
           <Map 
             routes={filteredRoutes}
             onCircleClicked={this.handleCircleClicked}
