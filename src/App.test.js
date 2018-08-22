@@ -57,23 +57,21 @@ describe('App', () => {
     const {airline, srcAirport, destAirport} = getRouteAirlineAirports(0);
 
     expect(
-        wrapper.containsMatchingElement(
-          <tr>
-            <td>{airline.name}</td>
-            <td>{srcAirport.name}</td>          
-            <td>{destAirport.name}</td>          
-          </tr>
-        )
+      wrapper.containsMatchingElement(
+        <tr>
+          <td>{airline.name}</td>
+          <td>{srcAirport.name}</td>          
+          <td>{destAirport.name}</td>          
+        </tr>
+      )
     ).toBe(true);
   });
 
   describe('the user clicks on the buttons', () => {
 
     describe('Next Page', () => {
-      let tableContainer;
-
       beforeEach(() => {      
-        tableContainer = mount(
+        wrapper = mount(
           <TableContainer
             columns={columns}
             rows={rows}
@@ -81,18 +79,31 @@ describe('App', () => {
             perPage={PERPAGE}
           />
         );
-        const button = tableContainer.find('button#next');
-
+        const button = wrapper.find('button#next');
         button.simulate('click', {
           preventDefault: () => {},
-        });       
+        });
+      });
+
+      it('should enable the "Previous Page" button', () => {
+        expect(
+          wrapper.containsMatchingElement(            
+            <button><i></i>Previous Page</button>
+          )
+        ).toBe(true);
+
+        expect(
+          wrapper.containsMatchingElement(            
+            <button disabled><i></i>Previous Page</button>
+          )
+        ).toBe(false);        
       });
 
       it('should not display the first row of data', () => {
         const {airline, srcAirport, destAirport} = getRouteAirlineAirports(0);
 
         expect(
-          tableContainer.containsMatchingElement(
+          wrapper.containsMatchingElement(
             <tr>
               <td>{airline.name}</td>
               <td>{srcAirport.name}</td>
@@ -106,7 +117,7 @@ describe('App', () => {
         const {airline, srcAirport, destAirport} = getRouteAirlineAirports(PERPAGE);
 
         expect(
-          tableContainer.containsMatchingElement(
+          wrapper.containsMatchingElement(
             <tr>
               <td>{airline.name}</td>
               <td>{srcAirport.name}</td>
