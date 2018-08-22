@@ -25,14 +25,12 @@ class Map extends Component {
           className="source" 
           airport={src}
           onClick={this.props.onCircleClicked}
-          onMouseEnter={this.props.onCircleMouseIn}
         />
 
         <Circle 
           className="destination" 
           airport={dest}
           onClick={this.props.onCircleClicked}
-          onMouseEnter={this.props.onCircleMouseIn}
         />
       </g>      
     ));

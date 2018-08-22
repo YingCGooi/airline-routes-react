@@ -4,6 +4,7 @@ const Buttons = (props) => (
   <div>
     <button
       className='ui left button'
+      id='prev'
       key='prev'
       disabled={props.isPrevDisabled}
       onClick={props.handlePrevClicked}
@@ -12,6 +13,7 @@ const Buttons = (props) => (
     </button>
     <button
       className='ui right button'
+      id='next'
       key='next'
       disabled={props.isNextDisabled}
       onClick={props.handleNextClicked}
