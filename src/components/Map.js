@@ -27,46 +27,7 @@ class Map extends Component {
     });
   }
 
-  vanillaRenderMap(props) {
-    const oldSvg = document.querySelector('svg');
-    if (oldSvg) oldSvg.remove();
-
-    const airportRoutes = this.getAirportRoutes(props.routes);
-
-    const svg = document.createElementNS(svgURI, 'svg');
-    svg.setAttributeNS(null, 'viewBox', "-180 -90 360 180");
-
-    const outerG = document.createElementNS(svgURI, 'g');
-    outerG.setAttribute('transform', 'scale(1 -1)');
-
-    const image = document.createElementNS(svgURI, 'image')
-    const imageAttrs = {
-      xlinkHref: "equirectangular_world.jpg",
-      href: "equirectangular_world.jpg",
-      x: "-180",
-      y: "-90",
-      height: "100%",
-      width: "100%",
-      transform: "scale(1 -1)"
-    }
-
-    for (let attr in imageAttrs) {
-      image.setAttribute(attr, imageAttrs[attr]);
-    }
-
-    outerG.append(image);
-    svg.append(outerG);
-    document.querySelector('.map').append(svg);
-
-    airportRoutes.forEach(({src, dest}, index) => {
-      const g = document.createElementNS(svgURI, 'g');
-      const path = document.createElementNS(svgURI, 'path');
-      path.setAttribute('d', `M ${src.long} ${src.lat} L ${dest.long} ${dest.lat}`);
-
-      g.append(path);
-      outerG.append(g);
-    });
-
+  vanillaRenderCircles(airportRoutes, outerG) {
     airportRoutes.forEach( ({src, dest}, index) => {
       const g = document.createElementNS(svgURI, 'g');
 
@@ -80,6 +41,52 @@ class Map extends Component {
       g.append(destCircle);
       outerG.append(g);
     });
+  }
+
+  vanillaRenderPaths(airportRoutes, outerG) {
+    airportRoutes.forEach(({src, dest}, index) => {
+      const g = document.createElementNS(svgURI, 'g');
+      const path = document.createElementNS(svgURI, 'path');
+      path.setAttribute('d', `M ${src.long} ${src.lat} L ${dest.long} ${dest.lat}`);
+
+      g.append(path);
+      outerG.append(g);
+    });    
+  }
+
+  vanillaRenderMap(props) {
+    const oldSvg = document.querySelector('svg');
+    if (oldSvg) oldSvg.remove();
+
+    const airportRoutes = this.getAirportRoutes(props.routes);
+
+    const svg = document.createElementNS(svgURI, 'svg');
+    svg.setAttributeNS(null, 'viewBox', "-180 -90 360 180");
+
+    const outerG = document.createElementNS(svgURI, 'g');
+    outerG.setAttribute('transform', 'scale(1 -1)');
+
+    const image = document.createElementNS(svgURI, 'image');
+    const imageAttrs = {
+      xlinkHref: "equirectangular_world.jpg",
+      href: "equirectangular_world.jpg",
+      x: "-180",
+      y: "-90",
+      height: "100%",
+      width: "100%",
+      transform: "scale(1 -1)"
+    };
+
+    for (let attr in imageAttrs) {
+      image.setAttribute(attr, imageAttrs[attr]);
+    }
+
+    outerG.append(image);
+    svg.append(outerG);
+    document.querySelector('.map').append(svg);
+
+    this.vanillaRenderPaths(airportRoutes, outerG);
+    this.vanillaRenderCircles(airportRoutes, outerG);
 
     svg.addEventListener('click', (e) => {
       props.onCircleClicked(e);
