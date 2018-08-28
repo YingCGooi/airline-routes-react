@@ -2,47 +2,114 @@ import React, { Component } from 'react';
 import Data from '../data';
 import Circle from './Circle';
 
+const svgURI = 'http://www.w3.org/2000/svg';
+
 class Map extends Component {
-  generateKey = (src, dest) => (
-    src + dest + String(Math.random())
-  )
+  round(number) {
+    return Math.round(number);
+  }
+
+  getAirportRoutes(routes) {
+    return routes.map( ({src, dest}) => {
+      const route = { src: Data.getAirportByCode(src), 
+        dest: Data.getAirportByCode(dest) };
+
+      route.src = Object.assign(route.src, {
+        lat: this.round(route.src.lat), 
+        long: this.round(route.src.long)
+      });
+
+      route.dest = Object.assign(route.dest, { 
+        lat: this.round(route.dest.lat), 
+        long: this.round(route.dest.long) 
+      });      
+
+      return route;
+    });
+  }
+
+  vanillaRenderMap(props) {
+    const oldSvg = document.querySelector('svg');
+    if (oldSvg) oldSvg.remove();
+
+    const airportRoutes = this.getAirportRoutes(props.routes);
+
+    const svg = document.createElementNS(svgURI, 'svg');
+    svg.setAttributeNS(null, 'viewBox', "-180 -90 360 180");
+
+    const outerG = document.createElementNS(svgURI, 'g');
+    outerG.setAttribute('transform', 'scale(1 -1)');
+
+    const image = document.createElementNS(svgURI, 'image')
+    const imageAttrs = {
+      xlinkHref: "equirectangular_world.jpg",
+      href: "equirectangular_world.jpg",
+      x: "-180",
+      y: "-90",
+      height: "100%",
+      width: "100%",
+      transform: "scale(1 -1)"
+    }
+
+    for (let attr in imageAttrs) {
+      image.setAttribute(attr, imageAttrs[attr]);
+    }
+
+    outerG.append(image);
+    svg.append(outerG);
+    document.querySelector('.map').append(svg);
+
+    airportRoutes.forEach(({src, dest}, index) => {
+      const g = document.createElementNS(svgURI, 'g');
+      const path = document.createElementNS(svgURI, 'path');
+      path.setAttribute('d', `M ${src.long} ${src.lat} L ${dest.long} ${dest.lat}`);
+
+      g.append(path);
+      outerG.append(g);
+    });
+
+    airportRoutes.forEach( ({src, dest}, index) => {
+      const g = document.createElementNS(svgURI, 'g');
+
+      const srcCircle = this.createCircle('source', src);
+      const destCircle = this.createCircle('destination', dest);
+
+      const title = document.createElement('title');
+      title.append(src.name);
+      srcCircle.append(title);
+      g.append(srcCircle);
+      g.append(destCircle);
+      outerG.append(g);
+    });
+
+    svg.addEventListener('click', (e) => {
+      props.onCircleClicked(e);
+    });
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.vanillaRenderMap(newProps);
+  }
+
+  componentDidMount() {
+    this.vanillaRenderMap(this.props);
+  }
+
+  createCircle(className, airport) {
+    const srcCircle = document.createElementNS(svgURI, 'circle');
+
+    srcCircle.setAttribute('class', className);
+    srcCircle.setAttribute('cx', airport.long);
+    srcCircle.setAttribute('cy', airport.lat);
+    srcCircle.setAttribute('data-code', airport.code);
+
+    return srcCircle;
+  }
 
   render() {
-    const airportRoutes = this.props.routes.map( ({src, dest}) => (
-      { src: Data.getAirportByCode(src), 
-        dest: Data.getAirportByCode(dest) }
-    ));
-
-    const paths = airportRoutes.map(({src, dest}) => (
-      <g key={this.generateKey(src.code, dest.code)}>
-        <path d={`M${src.long} ${src.lat} L ${dest.long} ${dest.lat}`} />
-      </g>
-    ));
-
-    const circles = airportRoutes.map(({src, dest}) => (
-      <g key={this.generateKey(src.code, dest.code)}>
-        <Circle 
-          className="source" 
-          airport={src}
-          onClick={this.props.onCircleClicked}
-        />
-
-        <Circle 
-          className="destination" 
-          airport={dest}
-          onClick={this.props.onCircleClicked}
-        />
-      </g>      
-    ));
-
+    // if we render the circles and paths here, it will take around 400ms to update the Map.
     return (
-      <svg className="map" viewBox="-180 -90 360 180">
-        <g transform="scale(1 -1)">
-          <image xlinkHref="equirectangular_world.jpg" href="equirectangular_world.jpg" x="-180" y="-90" height="100%" width="100%" transform="scale(1 -1)"/>
-        {paths}
-        {circles}
-        </g>
-        }
+      <svg viewBox="-180 -90 360 180">
       </svg>
     )
   }
