@@ -77,6 +77,7 @@ class App extends Component {
   }
 
   handleCircleClicked = (e) => {
+    if (e.target.tagName !== 'circle') return;
     const code = e.target.dataset.code;
     this.setState({ airportCode: code });
     document.querySelector('[name=airportCode]').value = code;
