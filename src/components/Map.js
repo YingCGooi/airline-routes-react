@@ -106,7 +106,7 @@ class Map extends Component {
   }
 
   render() {
-    // if we render the circles and paths here, it will take around 400ms to update the Map.
+    // we don't render the paths and circles here using JSX, since it will take around 400ms!
     return (
       <svg viewBox="-180 -90 360 180">
       </svg>
