@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Data from '../data';
-import Circle from './Circle';
 
 const svgURI = 'http://www.w3.org/2000/svg';
 
