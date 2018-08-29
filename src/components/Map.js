@@ -34,9 +34,13 @@ class Map extends Component {
       const srcCircle = this.createCircle('source', src);
       const destCircle = this.createCircle('destination', dest);
 
-      const title = document.createElement('title');
-      title.append(src.name);
-      srcCircle.append(title);
+      const srcTitle = document.createElementNS(svgURI, 'title');
+      const destTitle = document.createElementNS(svgURI, 'title');      
+      srcTitle.append(src.name);
+      destTitle.append(dest.name);      
+      srcCircle.append(srcTitle);
+      destCircle.append(destTitle);
+
       g.append(srcCircle);
       g.append(destCircle);
       outerG.append(g);
@@ -113,7 +117,7 @@ class Map extends Component {
   }
 
   render() {
-    // we don't render the paths and circles here using JSX, since it will take around 400ms!
+    // we don't render the paths and circles here using JSX. Using vanilla JS instead will greatly enhance performace.
     return (
       <svg viewBox="-180 -90 360 180">
       </svg>
