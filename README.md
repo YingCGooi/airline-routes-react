@@ -1,5 +1,7 @@
 ## Airline Routes
-This single-page application was built with React JS, bootstrapped via Create React App.
+A single-page application that displays routes flown by major airlines. Built with React JS, bootstrapped via Create React App.
+
+![airline routes ui](https://i.imgur.com/v2mbJin.png)
 
 Semantic UI is used to apply general styling to elements, with some custom CSS overriding involved.
 
